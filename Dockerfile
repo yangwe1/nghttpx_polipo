@@ -7,6 +7,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list &&\
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY polipo.conf /etc/polipo/polipo.conf
+COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
 RUN ip route show | awk '/default/ {print $3}' > /etc/container_environment/ADDR &&\
     echo 1080 > /etc/container_environment/SS_PORT
 RUN mkdir -p /etc/service/polipo && \
