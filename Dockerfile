@@ -10,7 +10,7 @@ COPY polipo.conf /etc/polipo/polipo.conf
 COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
 RUN ip route show | awk '/default/ {print $3}' > /etc/container_environment/ADDR &&\
     echo 1080 > /etc/container_environment/SS_PORT
-RUN mkdir -p /etc/service/polipo && \
+RUN mkdir -p /etc/service/polipo && mkdir -p /var/log/nghttpx/ &&\
     printf "#!/bin/sh\n\nexec /usr/bin/polipo -c /etc/polipo/polipo.conf socksParentProxy=\"\$ADDR:\$SS_PORT\"\n" > /etc/service/polipo/run &&\
     chmod +x /etc/service/polipo/run && mkdir -p /etc/service/nghttpx/ &&\
     printf "#!/bin/sh\n\nexec /usr/sbin/nghttpx -s -f'*,9699' -b127.0.0.1,3128 /certs/\$KEY /certs/\$CERT\n" > /etc/service/nghttpx/run &&\
